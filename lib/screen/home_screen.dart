@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_uts/buatLaporan.dart';
-import 'package:flutter_application_uts/comment.dart';
-import 'package:flutter_application_uts/models/post.dart';
-import 'package:flutter_application_uts/profile.dart';
-import 'package:flutter_application_uts/widgets/checklist.dart';
+import 'package:flutter_application_uts/screen/buatLaporan_screen.dart';
+import 'package:flutter_application_uts/screen/comment_screen.dart';
+import 'package:flutter_application_uts/models/post_model.dart';
+import 'package:flutter_application_uts/screen/profile_screen.dart';
+import 'package:flutter_application_uts/widgets/checklist_widget.dart';
 
 class homepage extends StatefulWidget {
   @override
@@ -43,8 +43,7 @@ class _homepageState extends State<homepage> {
 
   @override
   void dispose() {
-    _postsSubscription
-        ?.cancel(); // Cancel the subscription to avoid memory leaks
+    _postsSubscription?.cancel();
     super.dispose();
   }
 

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application_uts/firebase_options.dart';
-import 'firebase_auth_service.dart';
-import 'home.dart';
-import 'login.dart';
+import 'package:flutter_application_uts/screen/splash_screen.dart';
+import 'package:get/get.dart';
+import 'auth/firebase_auth_service.dart';
+import 'screen/home_screen.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 
 void main() async {
@@ -22,8 +23,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return GetMaterialApp(
+      title: 'Flutter Aplikasi Laporan Kehilangan Barang Di Kampus',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
           } else if (snapshot.hasData) {
             return homepage();
           } else {
-            return login();
+            return SplashScreen();
           }
         },
       ),

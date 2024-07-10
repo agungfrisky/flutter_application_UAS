@@ -4,8 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_uts/models/comment_model.dart';
-import 'package:flutter_application_uts/home.dart';
-import 'package:flutter_application_uts/models/post.dart';
+import 'package:flutter_application_uts/models/post_model.dart';
 
 class CommentPage extends StatefulWidget {
   final Post post;
@@ -37,35 +36,31 @@ class _CommentPageState extends State<CommentPage> {
             .doc(user.uid)
             .get();
         if (userDoc.exists) {
-          // Access the data as a Map
           Map<String, dynamic>? userData =
               userDoc.data() as Map<String, dynamic>?;
           setState(() {
-            _currentUser = userData?['nama'] ??
-                'Anonymous'; // Use 'nama' or another field as needed
+            _currentUser = userData?['nama'] ?? 'Anonymous';
           });
         } else {
           setState(() {
-            _currentUser =
-                'Anonymous'; // Handle case where user document does not exist
+            _currentUser = 'Anonymous';
           });
         }
       } catch (e) {
         print('Error fetching user: $e');
         setState(() {
-          _currentUser = 'Anonymous'; // Handle error
+          _currentUser = 'Anonymous';
         });
       }
     } else {
       setState(() {
-        _currentUser = 'Anonymous'; // Handle case where no user is logged in
+        _currentUser = 'Anonymous';
       });
     }
   }
 
   String sanitizeDocumentId(String id) {
-    return id.replaceAll(
-        RegExp(r'[/\\]'), '_'); // Replace slashes with underscores
+    return id.replaceAll(RegExp(r'[/\\]'), '_');
   }
 
   Future<void> _fetchComments() async {
@@ -108,7 +103,7 @@ class _CommentPageState extends State<CommentPage> {
 
   @override
   void dispose() {
-    _commentsSubscription.cancel(); // Cancel the subscription
+    _commentsSubscription.cancel();
     _commentController.dispose();
     super.dispose();
   }

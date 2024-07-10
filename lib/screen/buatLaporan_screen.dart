@@ -3,9 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_uts/firebase_auth_service.dart';
-import 'package:flutter_application_uts/home.dart';
-import 'package:flutter_application_uts/models/post.dart';
+import 'package:flutter_application_uts/auth/firebase_auth_service.dart';
+import 'package:flutter_application_uts/models/post_model.dart';
 import 'package:image_picker/image_picker.dart';
 
 class BuatLaporanPage extends StatefulWidget {
@@ -51,9 +50,7 @@ class _BuatLaporanPageState extends State<BuatLaporanPage> {
       try {
         String imageUrl = await _uploadImage(_imageFile!);
 
-        final newPostRef = FirebaseFirestore.instance
-            .collection('posts')
-            .doc(); // Generate a new document reference
+        final newPostRef = FirebaseFirestore.instance.collection('posts').doc();
         final post = Post(
           imageUrl: imageUrl,
           username: _currentUser?["nama"] ?? 'usr kosong ',
@@ -61,11 +58,10 @@ class _BuatLaporanPageState extends State<BuatLaporanPage> {
           caption: _captionController.text,
           location: _locationController.text,
           isFound: false,
-          id: newPostRef.id, // Pass the new document ID
+          id: newPostRef.id,
         );
 
-        await newPostRef
-            .set(post.toMap()); // Save the post with the generated ID
+        await newPostRef.set(post.toMap());
         _clearForm();
         Navigator.pop(context);
       } catch (e) {
@@ -76,17 +72,13 @@ class _BuatLaporanPageState extends State<BuatLaporanPage> {
 
   Future<String> _uploadImage(File imageFile) async {
     try {
-      // Get a reference to the storage bucket
       final storageRef = FirebaseStorage.instance.ref();
-      // Create a reference to the file location
       final imageRef =
           storageRef.child('images/${imageFile.path.split('/').last}');
 
-      // Upload the file
       final uploadTask = imageRef.putFile(imageFile);
       await uploadTask.whenComplete(() {});
 
-      // Get the download URL
       final downloadURL = await imageRef.getDownloadURL();
       return downloadURL;
     } catch (e) {

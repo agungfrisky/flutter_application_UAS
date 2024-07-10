@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_uts/models/post.dart';
+import 'package:flutter_application_uts/models/post_model.dart';
 
 class ChecklistButton extends StatefulWidget {
   final Post post;

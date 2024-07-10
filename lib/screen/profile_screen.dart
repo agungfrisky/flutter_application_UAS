@@ -2,10 +2,10 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_uts/comment.dart';
-import 'package:flutter_application_uts/login.dart';
-import 'package:flutter_application_uts/models/post.dart';
-import 'package:flutter_application_uts/widgets/checklist.dart';
+import 'package:flutter_application_uts/screen/comment_screen.dart';
+import 'package:flutter_application_uts/screen/login_screen.dart';
+import 'package:flutter_application_uts/models/post_model.dart';
+import 'package:flutter_application_uts/widgets/checklist_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -62,8 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void dispose() {
-    _postsSubscription
-        ?.cancel(); // Cancel the subscription to avoid memory leaks
+    _postsSubscription?.cancel();
     super.dispose();
   }
 

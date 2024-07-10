@@ -5,7 +5,7 @@ class Post {
   final String caption;
   final String location;
   final bool isFound;
-  final String id; // Add this line for the document ID
+  final String id;
 
   Post({
     required this.imageUrl,
@@ -14,7 +14,7 @@ class Post {
     required this.caption,
     required this.location,
     required this.isFound,
-    required this.id, // Initialize the id
+    required this.id,
   });
 
   Map<String, dynamic> toMap() {
@@ -36,7 +36,7 @@ class Post {
       caption: map['caption'],
       location: map['location'],
       isFound: map['isFound'],
-      id: id, // Set the id
+      id: id,
     );
   }
 }

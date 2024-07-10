@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'firebase_auth_service.dart';
-import 'home.dart';
+import '../auth/firebase_auth_service.dart';
+import 'home_screen.dart';
 
 class signUp extends StatefulWidget {
   const signUp({super.key});
@@ -124,7 +124,7 @@ class _SignUp extends State<signUp> {
                       }
                     } else {
                       setState(() {
-                        _errorMessage = "Passwords do not match!";
+                        _errorMessage = "Upss Password Tidak Cocok!";
                       });
                     }
                   },
