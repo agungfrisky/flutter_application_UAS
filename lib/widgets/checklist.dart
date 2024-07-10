@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_uts/home.dart';
 import 'package:flutter_application_uts/models/post.dart';
 
 class ChecklistButton extends StatefulWidget {
@@ -16,12 +16,23 @@ class _ChecklistButtonState extends State<ChecklistButton> {
   Color buttonColor = Colors.white;
   Color textColor = Colors.blue;
   String buttonText = 'Dicari';
+  bool _isOwner = false;
 
   @override
   void initState() {
     super.initState();
-    isChecked = widget.post.isFound;
-    _updateButtonState();
+    _initializeButtonState();
+  }
+
+  Future<void> _initializeButtonState() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        isChecked = widget.post.isFound;
+        _isOwner = widget.post.userid == user.uid;
+        _updateButtonState();
+      });
+    }
   }
 
   void _updateButtonState() {
@@ -36,38 +47,47 @@ class _ChecklistButtonState extends State<ChecklistButton> {
     }
   }
 
-  void _handleTap() {
-    setState(() {
-      isChecked = !isChecked;
-      _updateButtonState();
-      FirebaseFirestore.instance
-          .collection('posts')
-          .doc(widget.post.imageUrl)
-          .update({
-        'isFound': isChecked,
+  Future<void> _handleTap() async {
+    if (_isOwner) {
+      setState(() {
+        isChecked = !isChecked;
+        _updateButtonState();
       });
-    });
+
+      try {
+        // Update Firestore document with the correct ID
+        await FirebaseFirestore.instance
+            .collection('posts')
+            .doc(widget.post.id) // Use post.id here if it is the document ID
+            .update({'isFound': isChecked});
+      } catch (e) {
+        print('Error updating post: $e');
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _handleTap,
-      child: Container(
-        width: 100,
-        height: 30,
-        decoration: BoxDecoration(
-          color: buttonColor,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.blue),
-        ),
-        child: Center(
-          child: Text(
-            buttonText,
-            style: TextStyle(
-              color: textColor,
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
+      child: AbsorbPointer(
+        absorbing: !_isOwner, // Disable interaction if not the owner
+        child: Container(
+          width: 100,
+          height: 30,
+          decoration: BoxDecoration(
+            color: buttonColor,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.blue),
+          ),
+          child: Center(
+            child: Text(
+              buttonText,
+              style: TextStyle(
+                color: textColor,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),

@@ -1,29 +1,20 @@
-import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_application_uts/buatLaporan.dart';
 import 'package:flutter_application_uts/comment.dart';
 import 'package:flutter_application_uts/models/post.dart';
 import 'package:flutter_application_uts/profile.dart';
 import 'package:flutter_application_uts/widgets/checklist.dart';
-import 'package:image_picker/image_picker.dart';
-import 'models/comment_model.dart';
-import 'firebase_auth_service.dart';
-import 'login.dart';
 
 class homepage extends StatefulWidget {
-  final FirebaseAuthService _authService =
-      FirebaseAuthService(FirebaseAuth.instance);
-
   @override
   State<homepage> createState() => _homepageState();
 }
 
 class _homepageState extends State<homepage> {
   final List<Post> _posts = [];
+  StreamSubscription<QuerySnapshot>? _postsSubscription;
 
   @override
   void initState() {
@@ -32,18 +23,29 @@ class _homepageState extends State<homepage> {
   }
 
   Future<void> _fetchPosts() async {
-    FirebaseFirestore.instance
+    _postsSubscription = FirebaseFirestore.instance
         .collection('posts')
         .snapshots()
         .listen((snapshot) {
-      setState(() {
-        _posts.clear();
-        for (var doc in snapshot.docs) {
-          _posts.add(Post.fromMap(doc.data()));
-        }
-        _posts.sort((a, b) => b.caption.compareTo(a.caption));
-      });
+      print("Data received from Firestore: ${snapshot.docs.length} documents");
+      if (mounted) {
+        setState(() {
+          _posts.clear();
+          for (var doc in snapshot.docs) {
+            _posts
+                .add(Post.fromMap(doc.data() as Map<String, dynamic>, doc.id));
+          }
+          _posts.sort((a, b) => b.caption.compareTo(a.caption));
+        });
+      }
     });
+  }
+
+  @override
+  void dispose() {
+    _postsSubscription
+        ?.cancel(); // Cancel the subscription to avoid memory leaks
+    super.dispose();
   }
 
   @override

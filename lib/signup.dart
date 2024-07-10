@@ -31,7 +31,6 @@ class _SignUp extends State<signUp> {
       body: Center(
         child: Container(
           width: 300,
-          height: 600,
           child: Padding(
             padding: const EdgeInsets.all(0),
             child: Column(

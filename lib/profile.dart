@@ -1,9 +1,8 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_application_uts/comment.dart';
-import 'package:flutter_application_uts/firebase_auth_service.dart';
 import 'package:flutter_application_uts/login.dart';
 import 'package:flutter_application_uts/models/post.dart';
 import 'package:flutter_application_uts/widgets/checklist.dart';
@@ -15,47 +14,57 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   Map<String, dynamic>? _currentUser;
+  final List<Post> _posts = [];
+  StreamSubscription<QuerySnapshot>? _postsSubscription;
+
   Future<void> _fetchUser() async {
-    final FirebaseAuthService _authService =
-        FirebaseAuthService(FirebaseAuth.instance);
-    User? user = await _authService.getCurrentUser();
+    final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
           .get();
-      setState(() {
-        _currentUser = userDoc.data() as Map<String, dynamic>?;
+      if (mounted) {
+        setState(() {
+          _currentUser = userDoc.data() as Map<String, dynamic>?;
+        });
+      }
+    }
+  }
+
+  Future<void> _fetchPosts() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      _postsSubscription = FirebaseFirestore.instance
+          .collection('posts')
+          .where('userid', isEqualTo: user.uid)
+          .snapshots()
+          .listen((snapshot) {
+        if (mounted) {
+          setState(() {
+            _posts.clear();
+            for (var doc in snapshot.docs) {
+              _posts.add(Post.fromMap(doc.data(), doc.id));
+            }
+            _posts.sort((a, b) => b.caption.compareTo(a.caption));
+          });
+        }
       });
     }
   }
 
-  final List<Post> _posts = [];
-  Future<void> _fetchPosts() async {
-    final FirebaseAuthService _authService =
-        FirebaseAuthService(FirebaseAuth.instance);
-    User? user = await _authService.getCurrentUser();
-    FirebaseFirestore.instance
-        .collection('posts')
-        .where('userid', isEqualTo: user?.uid ?? "uid Kosong")
-        .snapshots()
-        .listen((snapshot) {
-      setState(() {
-        _posts.clear();
-        for (var doc in snapshot.docs) {
-          _posts.add(Post.fromMap(doc.data()));
-        }
-        _posts.sort((a, b) => b.caption.compareTo(a.caption));
-      });
-    });
-  }
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _fetchUser();
     _fetchPosts();
+  }
+
+  @override
+  void dispose() {
+    _postsSubscription
+        ?.cancel(); // Cancel the subscription to avoid memory leaks
+    super.dispose();
   }
 
   @override
@@ -81,8 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             SizedBox(height: 10.0),
             Text(
-              _currentUser?["nama"] ??
-                  "User Kosong", // Placeholder, replace with actual username
+              _currentUser?["nama"] ?? "User Kosong",
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,

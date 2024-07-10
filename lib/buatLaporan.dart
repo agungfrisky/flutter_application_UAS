@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -52,6 +51,9 @@ class _BuatLaporanPageState extends State<BuatLaporanPage> {
       try {
         String imageUrl = await _uploadImage(_imageFile!);
 
+        final newPostRef = FirebaseFirestore.instance
+            .collection('posts')
+            .doc(); // Generate a new document reference
         final post = Post(
           imageUrl: imageUrl,
           username: _currentUser?["nama"] ?? 'usr kosong ',
@@ -59,9 +61,11 @@ class _BuatLaporanPageState extends State<BuatLaporanPage> {
           caption: _captionController.text,
           location: _locationController.text,
           isFound: false,
+          id: newPostRef.id, // Pass the new document ID
         );
 
-        FirebaseFirestore.instance.collection('posts').add(post.toMap());
+        await newPostRef
+            .set(post.toMap()); // Save the post with the generated ID
         _clearForm();
         Navigator.pop(context);
       } catch (e) {

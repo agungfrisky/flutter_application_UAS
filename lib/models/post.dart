@@ -5,6 +5,7 @@ class Post {
   final String caption;
   final String location;
   final bool isFound;
+  final String id; // Add this line for the document ID
 
   Post({
     required this.imageUrl,
@@ -13,6 +14,7 @@ class Post {
     required this.caption,
     required this.location,
     required this.isFound,
+    required this.id, // Initialize the id
   });
 
   Map<String, dynamic> toMap() {
@@ -26,7 +28,7 @@ class Post {
     };
   }
 
-  static Post fromMap(Map<String, dynamic> map) {
+  static Post fromMap(Map<String, dynamic> map, String id) {
     return Post(
       imageUrl: map['imageUrl'],
       username: map['username'],
@@ -34,6 +36,7 @@ class Post {
       caption: map['caption'],
       location: map['location'],
       isFound: map['isFound'],
+      id: id, // Set the id
     );
   }
 }
