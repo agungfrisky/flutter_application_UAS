@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "192441112220",
+    "project_id": "testmalink",
+    "storage_bucket": "testmalink.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:192441112220:android:bb6de569dcc065f7923f59",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_uts"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADOScXtHmMwplGL2HAL4OFWA4wYlxGbr4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
