@@ -65,7 +65,7 @@ class _BuatLaporanPageState extends State<BuatLaporanPage> {
         _clearForm();
         Navigator.pop(context);
       } catch (e) {
-        print('Error uploading post: $e');
+        print('Upss terjadi error saat mengunggah post: $e');
       }
     }
   }
@@ -82,8 +82,8 @@ class _BuatLaporanPageState extends State<BuatLaporanPage> {
       final downloadURL = await imageRef.getDownloadURL();
       return downloadURL;
     } catch (e) {
-      print('Error uploading image: $e');
-      throw Exception('Error uploading image');
+      print('Upss terjadi error saat mengunggah gambar: $e');
+      throw Exception('Error pada saat mengunggah gambar');
     }
   }
 
@@ -101,10 +101,10 @@ class _BuatLaporanPageState extends State<BuatLaporanPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Buat Laporan',
+          'Buat Laporan Kehilangan',
           style: TextStyle(
             color: Colors.blue,
-            fontSize: 18,
+            fontSize: 21,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -124,7 +124,7 @@ class _BuatLaporanPageState extends State<BuatLaporanPage> {
             ),
             SizedBox(height: 20),
             _imageFile == null
-                ? Text('No image selected.')
+                ? Text('Belum ada gambar yang kamu pilih.')
                 : Image.file(
                     _imageFile!,
                     height: MediaQuery.of(context).size.height / 2,
@@ -132,11 +132,39 @@ class _BuatLaporanPageState extends State<BuatLaporanPage> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _pickImage,
-              child: Text('Pilih Gambar'),
+              child: Text(
+                'Pilih Gambar',
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  color: Colors.blue,
+                  fontSize: 20,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(MediaQuery.of(context).size.width * 0.30, 40),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(7),
+                ),
+                backgroundColor: Colors.grey[50],
+              ),
             ),
             ElevatedButton(
               onPressed: _uploadPost,
-              child: Text('Upload'),
+              child: Text(
+                'Unggah',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(MediaQuery.of(context).size.width * 0.30, 40),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(7),
+                ),
+                backgroundColor: Colors.blue,
+              ),
             ),
           ],
         ),

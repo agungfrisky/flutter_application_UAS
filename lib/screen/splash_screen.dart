@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             SizedBox(height: 20),
             Text(
-              'Aplikasi Pelaporan Kehilangan di Kampus',
+              'Aplikasi Laporan Kehilangan di Kampus',
               style: TextStyle(
                 fontSize: 12,
                 color: Colors.black,

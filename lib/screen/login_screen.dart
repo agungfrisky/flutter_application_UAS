@@ -27,7 +27,7 @@ class _loginPage extends State<login> {
       body: SingleChildScrollView(
         child: Center(
           child: Container(
-            // width: 300,
+            width: 300,
             // height: 540,
             child: Column(
               children: [
@@ -74,7 +74,15 @@ class _loginPage extends State<login> {
                         textInputType: TextInputType.visiblePassword,
                         obscureText: true,
                       ),
-                      SizedBox(height: 20),
+                      if (_errorMessage.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Masukkan Email & Password yang benar dong!",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      SizedBox(height: 5),
                       ElevatedButton(
                         onPressed: () async {
                           try {
@@ -100,15 +108,15 @@ class _loginPage extends State<login> {
                           'Masuk',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 19,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
                           minimumSize: Size(
-                              MediaQuery.of(context).size.width * 0.32, 50),
+                              MediaQuery.of(context).size.width * 0.30, 40),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(13),
+                            borderRadius: BorderRadius.circular(7),
                           ),
                           backgroundColor: Colors.blue,
                         ),
@@ -126,27 +134,19 @@ class _loginPage extends State<login> {
                           'Daftar',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 19,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
                           minimumSize: Size(
-                              MediaQuery.of(context).size.width * 0.32, 50),
+                              MediaQuery.of(context).size.width * 0.30, 40),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(13),
+                            borderRadius: BorderRadius.circular(7),
                           ),
                           backgroundColor: Colors.blue,
                         ),
                       ),
-                      if (_errorMessage.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            _errorMessage,
-                            style: TextStyle(color: Colors.red),
-                          ),
-                        ),
                     ],
                   ),
                 ),
@@ -176,6 +176,7 @@ class TextFormGlobal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 65,
       padding: const EdgeInsets.all(10),
       child: TextFormField(
         controller: controller,

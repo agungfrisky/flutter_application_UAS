@@ -193,8 +193,8 @@ class CommentInput extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: controller,
-              decoration:
-                  InputDecoration.collapsed(hintText: 'Tulis komentar...'),
+              decoration: InputDecoration.collapsed(
+                  hintText: 'Ayo tuliskan komentarmu...'),
             ),
           ),
           IconButton(

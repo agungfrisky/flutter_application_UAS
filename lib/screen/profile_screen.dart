@@ -74,7 +74,7 @@ class _ProfilePageState extends State<ProfilePage> {
           'Profil',
           style: TextStyle(
             color: Colors.blue,
-            fontSize: 18,
+            fontSize: 22,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -104,7 +104,21 @@ class _ProfilePageState extends State<ProfilePage> {
                   MaterialPageRoute(builder: (context) => login()),
                 );
               },
-              child: Text('Logout'),
+              child: Text(
+                'Keluar',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                  fontSize: 19,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(MediaQuery.of(context).size.width * 0.20, 30),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                backgroundColor: Colors.red,
+              ),
             ),
             Expanded(
               child: ListView.builder(

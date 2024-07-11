@@ -77,7 +77,7 @@ class _ChecklistButtonState extends State<ChecklistButton> {
           height: 30,
           decoration: BoxDecoration(
             color: buttonColor,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(7),
             border: Border.all(color: Colors.blue),
           ),
           child: Center(
